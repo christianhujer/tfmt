@@ -2,6 +2,7 @@ package tfmt
 
 import (
 	"fmt"
+	"github.com/christianhujer/interceptor"
 	"strings"
 	"testing"
 )
@@ -36,6 +37,26 @@ func TestTfprintfDoesNotFormatAgain(t *testing.T) {
 	builder := strings.Builder{}
 	Tfprintf(&builder, "%{p1}s %{p2}s", map[string]interface{}{"p1": "%s", "p2": "bar"})
 	AssertEquals(t, expected, builder.String())
+}
+
+func TestTprintf(t *testing.T) {
+	expected := "foo bar"
+	stdout, stderr, err := interceptor.InterceptStrings(func() { Tprintf("%{p1}s %{p2}s", map[string]interface{}{"p1": "foo", "p2": "bar"}) })
+	if err != nil {
+		t.Error(err)
+	}
+	AssertEquals(t, expected, *stdout)
+	AssertEquals(t, "", *stderr)
+}
+
+func TestTprintfDoesNotFormatAgain(t *testing.T) {
+	expected := "%s bar"
+	stdout, stderr, err := interceptor.InterceptStrings(func() { Tprintf("%{p1}s %{p2}s", map[string]interface{}{"p1": "%s", "p2": "bar"}) })
+	if err != nil {
+		t.Error(err)
+	}
+	AssertEquals(t, expected, *stdout)
+	AssertEquals(t, "", *stderr)
 }
 
 //func TestTsprintfDoesNotReplaceRecursively(t *testing.T) {
