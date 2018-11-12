@@ -17,6 +17,12 @@ func TestTsprintf(t *testing.T) {
 	AssertEquals(t, expected, actual)
 }
 
+func TestTsprintfDoesNotFormatAgain(t *testing.T) {
+	expected := "%s bar"
+	actual := Tsprintf("%{p1}s %{p2}s", map[string]interface{}{"p1": "%s", "p2": "bar"})
+	AssertEquals(t, expected, actual)
+}
+
 //func TestTsprintfDoesNotReplaceRecursively(t *testing.T) {
 //	expected := "%{p2}s bar"
 //	actual := Tsprintf("%{p1}s %{p2}s", map[string]interface{}{"p1": "%{p2}s", "p2": "bar"})

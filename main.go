@@ -14,13 +14,13 @@ func formatString(format string, params map[string]interface{}) string {
 }
 
 func Tprintf(format string, params map[string]interface{}) (n int, err error) {
-	return fmt.Printf(formatString(format, params))
+	return fmt.Print(formatString(format, params))
 }
 
 func Tfprintf(w io.Writer, format string, params map[string]interface{}) (n int, err error) {
-	return fmt.Fprintf(w, formatString(format, params))
+	return fmt.Fprint(w, formatString(format, params))
 }
 
 func Tsprintf(format string, params map[string]interface{}) string {
-	return fmt.Sprintf(formatString(format, params))
+	return fmt.Sprint(formatString(format, params))
 }
